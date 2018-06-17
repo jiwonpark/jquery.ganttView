@@ -1,3 +1,13 @@
+var msbData = [
+	{
+		name: "Schedule 1", events: [
+			{ event: "Event 1", date: new Date(2010,00,01), stage: "Stage 1", color: "#f0f0f0" },
+			{ event: "Event 2", date: new Date(2010,00,02), stage: "Stage 2", color: "#f0f0f0" },
+			{ event: "Event 3", date: new Date(2010,00,04), color: "#f0f0f0" }
+		]
+	}
+];
+
 var ganttData = [
 	{
 		id: 1, name: "Feature 1", series: [

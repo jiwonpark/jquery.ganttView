@@ -17,6 +17,8 @@
 </head>
 <body>
 
+	<div id="msbChart"></div>
+	<br/><br/>
 	<div id="ganttChart"></div>
 	<br/><br/>
 	<div id="eventMessage"></div>
@@ -27,6 +29,52 @@
 	<script type="text/javascript" src="../jquery.ganttView.js"></script>
 	<script type="text/javascript" src="data.js"></script>
 	<script type="text/javascript">
+		$(function () {
+			$("#msbChart").msbView({ 
+				data: msbData,
+				slideWidth: 900,
+				behavior: {
+					onMouseInStage: function(msbIndex, eventIndex) { // Stage 부분 위에 마우스 커서가 올라오면 해당 stage의 시작 event의 index를 알려준다.
+						var startEvent = msbData[msbIndex].events[eventIndex];
+						var endEvent = msbData[msbIndex].events[eventIndex + 1];
+						var msg = "Mouse is over a stage: { start: " + startEvent.date.toString("M/d/yyyy") + ", end: " + endEvent.date.toString("M/d/yyyy") + " }";
+						$("#eventMessage").text(msg);
+					},
+
+					onMouseOutStage: function(msbIndex, eventIndex) { // 마찬가지
+						// ...
+					},
+
+					onMouseClickStage: function(msbIndex, eventIndex) { // 마찬가지
+						// ...
+					},
+
+					onMouseInEvent: function(msbIndex, eventIndex) { // Event 부분 위에 마우스 커서가 올라오면 해당 event의 index를 알려준다.
+						var event = msbData[msbIndex].events[eventIndex];
+						var msg = "Mouse is over an event: { event: " + event.date.toString("M/d/yyyy") + " }";
+						$("#eventMessage").text(msg);
+					},
+
+					onMouseOutEvent: function(msbIndex, eventIndex) { // 마찬가지
+						// ...
+					},
+
+					onMouseInEvent: function(msbIndex, eventIndex) { // 마찬가지
+						// ...
+					},
+
+					onDragStartEvent: function(msbIndex, eventIndex) { // Event 부분을 drag하면 해당 event의 날짜가 조절되고, 해당 event의 index를 알려준다.
+						var event = msbData[msbIndex].events[eventIndex];
+						var msg = "You started to adjust an event: { event: " + event.date.toString("M/d/yyyy") + " }";
+						$("#eventMessage").text(msg);
+					},
+
+					onDragEndEvent: function(msbIndex, eventIndex) { // 마찬가지
+					}
+				}
+			});
+		});
+
 		$(function () {
 			$("#ganttChart").ganttView({ 
 				data: ganttData,
