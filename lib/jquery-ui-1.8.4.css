@@ -313,4 +313,4 @@
 .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
 .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
 
-.ui-draggable { cursor: move; }
+.ui-draggable { cursor: pointer; }
