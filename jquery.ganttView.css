@@ -27,16 +27,26 @@ div.ganttview-hzheader-month.last {
 
 div.ganttview {
 	border: 1px solid #999;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
 }
 
 
 /* Horizontal Header */
+div.ganttview-hzheader {
+	border: 0px solid #d0d0d0;
+	color: #FFF;
+	background-color: #CCCCCC;
+}
 
 div.ganttview-hzheader-month {
 	width: 60px;
 	height: 20px;
 	border-right: 1px solid #d0d0d0;
 	line-height: 20px;
+	color: #FFF;
+	background-color: #6AAEFF;
 }
 
 div.ganttview-hzheader-day {
@@ -45,17 +55,45 @@ div.ganttview-hzheader-day {
 	border-right: 1px solid #f0f0f0;
 	border-top: 1px solid #d0d0d0;
 	line-height: 20px;
-	color: #777;
+	color: #fff;
+	background-color: #6AAEFF;
 }
 
 
 /* Vertical Header */
 
 div.ganttview-vtheader {
-	margin-top: 41px;
 	width: 240px;
 	overflow: hidden;
-	background-color: #fff;
+	border:0px solid #d0d0d0;
+	background-color: #E9EDF4;
+}
+
+div.ganttview-vtheader-title {
+	overflow: hidden;
+	height: 41px;
+	background-color: #6AAEFF;
+}
+
+div.ganttview-vtheader-titleid {
+	width: 30px;
+	color: #FFF;
+	float: left;
+	text-align:center;
+	line-height: 40px;
+	/*border-width: 1px;
+	border-style: solid; */
+}
+div.ganttview-vtheader-titleinfo {
+	width: 208px;
+	color: #FFF;
+	height: 41px;
+	float: left;
+	border-left: 1px solid #ffffff;
+	text-align:center;
+	line-height: 40px;
+	/*border-width: 1px;
+	border-style: solid; */
 }
 
 div.ganttview-vtheader-item {
@@ -64,18 +102,30 @@ div.ganttview-vtheader-item {
 }
 
 div.ganttview-vtheader-item-name {
-	width: 100px;
-	padding-left: 5px;
+	width: 30px;
 	border-top: 1px solid #d0d0d0;
-	line-height: 16px;
+	line-height: 30px;
+	text-align:center;
+	/* border-width: 1px;
+	border-style: solid; */
+}
+
+div.ganttview-vtheader-series {
+	width: 208px;
+	height: 31px;
+	border-top: 1px solid #d0d0d0;
+	line-height: 30px;
+	text-align:center;
+	border-left: 1px solid #ffffff;
+	/* border-width: 1px;
+	border-style: solid; */
 }
 
 div.ganttview-vtheader-series-name {
-	width: 130px;
-	height: 31px;
-	border-top: 1px solid #d0d0d0;
-	line-height: 16px;
-	padding-left: 5px;
+	line-height: 30px;
+	text-align:center;
+	float:left;
+	margin-left: 5px;
 }
 
 
@@ -112,9 +162,15 @@ div.ganttview-block-container {
 	padding-top: 4px;
 }
 
-div.ganttview-block {
-	position: relative;
+div.ganttview-block-master {
+	position: relative; 
 	height: 25px;
+}
+
+div.ganttview-block {
+	position: absolute; 
+	height: 25px;
+	/* float:left; */
 	background-color: #E5ECF9;
 	border: 1px solid #c0c0c0;
 	border-radius: 3px;
@@ -122,12 +178,15 @@ div.ganttview-block {
 	-webkit-border-radius: 3px;
 }
 
+
 div.ganttview-block-text {
 	position: absolute;
-	height: 12px;
+	height: 20px;
+	line-height: 20px;
 	font-size: 0.8em;
-	color: #999;
+	color: #fff;
 	padding: 2px 3px;
+	background-color: #E5ECF9;
 }
 
 
