@@ -233,20 +233,23 @@ behavior: {
             for (var i = 0; i < data.length; i++) {
 				var colums = jQuery("<div>", { "class": "ganttview-block-master" });
                 for (var j = 0; j < data[i].series.length; j++) {
-
+					var irow = pad(i, 5);  //for control rowid
+					var jcol = pad(j, 5);   //for control colid
                     var series = data[i].series[j];
+					var cnt = data[i].series.length;   //count series
                     var size = DateUtils.daysBetween(series.start, series.end) + 1;
 					var offset = DateUtils.daysBetween(start, series.start);
 					blockDiv = jQuery("<div>", {
                         "class": "ganttview-block",
+						"id": "cel"+irow+jcol,
                         "title": series.name + ", " + size + " days",
                         "css": {
-                            "width": ((size * cellWidth) - 9) + "px",
+                            "width": ((size * cellWidth) - 3) + "px",
                             "margin-left": ((offset * cellWidth) + 3) + "px"
 
                         }
                     });
-                    addBlockData(blockDiv, data[i], series);
+                    addBlockData(blockDiv, data[i], series ,cnt);
                     if (data[i].series[j].color) {
                         blockDiv.css("border-color", data[i].series[j].color);
                     }
@@ -257,7 +260,7 @@ behavior: {
 						case 3 : blockDiv.css("background-color", "#FDEADA"); break;
 						default : break;
                     }
-                    blockDiv.append(jQuery("<div>", { "class": "ganttview-block-text" ,"css": {"background-color":data[i].series[j].color   } }).text(size));
+                    blockDiv.append(jQuery("<div>", { "class": "ganttview-block-text", "id": "cet"+irow+jcol ,"css": {"background-color":data[i].series[j].color   } }).text(size));
 					colums.append(blockDiv);
 					
                 }
@@ -268,10 +271,10 @@ behavior: {
 			
         }
         
-        function addBlockData(block, data, series) {
+        function addBlockData(block, data, series , cnt) {
         	// This allows custom attributes to be added to the series data objects
         	// and makes them available to the 'data' argument of click, resize, and drag handlers
-        	var blockData = { id: data.id, name: data.name };
+        	var blockData = { id: data.id, name: data.name ,cnt: cnt };
         	jQuery.extend(blockData, series);
         	block.data("block-data", blockData);
         }
@@ -311,6 +314,7 @@ behavior: {
         }
         
         function bindBlockResize(div, cellWidth, startDate, callback) {
+			return;
         	jQuery("div.ganttview-block", div).resizable({
         		grid: cellWidth, 
         		handles: "e,w",
@@ -348,12 +352,39 @@ behavior: {
         	var width = block.outerWidth();
 			var numberOfDays = Math.round(width / cellWidth) - 1;
 			block.data("block-data").end = newStart.clone().addDays(numberOfDays);
+			var txt = jQuery("div.ganttview-block-text", block).text();
 			jQuery("div.ganttview-block-text", block).text(numberOfDays + 1);
-			
+			var cid = block.attr('id');
+			var maxcnt = block.data("block-data").cnt;  //rows block count
+
+			var rowid = cid.substring(0,8);	 var rowcid = "cet"+cid.substring(3,8);
+			var minid = parseInt(cid.substring(8,13))-1; if(minid <0 ) { minid= 0; }
+			var curid = parseInt(cid.substring(8,13));
+			//var pinfoid = pad( parseInt(cid.substring(8,13))-1 , 5);
+			var x_offset =  (block.css("margin-left").replace("px","")-offset);
+            for (var j = minid; j < maxcnt; j++) {
+				if( j != curid ) { 
+					var pinfoid = pad( j , 5 ); 
+					var blockid = rowid+pinfoid; var blocktxt = rowcid+pinfoid;
+					if( j <  curid ) {
+						var p_offset =  $("#"+blockid).css("margin-left").replace("px","");
+						var ex_width = offset -p_offset; 
+						var numberOfDays2 = Math.round(ex_width / cellWidth) - 1;
+						var oldStart = $("#"+blockid).data("block-data").start;
+						$("#"+blockid).data("block-data").end = oldStart.clone().addDays(numberOfDays2);
+						$("#"+blockid).css("width", ex_width-3 + "px");
+						$("#"+blocktxt).text(numberOfDays2 + 1); //ex block cell text
+					}else {
+						var p_offset =  $("#"+blockid).css("margin-left").replace("px","");
+						var c_offset = p_offset-x_offset; 
+						$("#"+blockid).css("margin-left", c_offset + "px");
+					}
+				}
+			}
 			// Remove top and left properties to avoid incorrect block positioning,
         	// set position to relative to keep blocks relative to scrollbar when scrolling
 			block.css("top", "").css("left", "")
-				.css("position", "relative").css("margin-left", offset + "px");
+				.css("position", "absolute").css("margin-left", offset + "px");
         }
         
         return {
@@ -369,6 +400,11 @@ behavior: {
             return has;
         }
     };
+
+	function pad(n, width) {
+		n = n + '';
+		return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+	}
 
     var DateUtils = {
     	
